@@ -1,25 +1,43 @@
-import logo from './logo.svg';
+import { Canvas2D, CanvasImage, Circle, Polygon, Rect, preloadImages } from 'canvas2d-wrapper'
+
+import useWindowDimensions from './hooks/useWindowDimensions';
+
 import './App.css';
 
-function App() {
+const SUBMARINE_SRC = 'img/submarine.png';
+
+preloadImages([
+	SUBMARINE_SRC,
+]);
+
+export default function App() {
+	const { width, height } = useWindowDimensions();
+
+	const elements = [
+		new CanvasImage({
+			id: 'submarine',
+			x: -width * 0.35,
+			y: 0,
+			width: 75,
+			height: 75,
+			zIndex: 10,
+			draggable: false,
+			src: SUBMARINE_SRC
+		})
+	];
+
+	console.log(elements);
+
 	return (
-		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<p>
-					Edit <code>src/App.js</code> and save to reload.
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-			</header>
-		</div>
+		<Canvas2D
+			elements={elements}
+			width={width}
+			height={height}
+			minZoom={1}
+			maxZoom={1}
+			tileSize={1}
+			lockXAxis={true}
+			lockYAxis={true}
+		/>
 	);
 }
-
-export default App;
