@@ -19,6 +19,7 @@ export default function App() {
 		submarineY: 0,
 		projectiles: [],
 		fishes: [],
+		lost: false,
 	});
 	const keyboard = useKeyboard();
 
@@ -33,6 +34,10 @@ export default function App() {
 	};
 
 	window.requestAnimationFrame(render);
+
+	if(state.lost) {
+		return <span>Lost</span>
+	}
 
 	return (
 		<Canvas2D

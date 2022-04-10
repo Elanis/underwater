@@ -48,7 +48,7 @@ function computeSubmarinePos(width, height, keyboard, submarineX, submarineY) {
 function recalcFishes(score, fishes, width, height) {
 	const newFishes = fishes.filter((elt) => elt.x > (-0.8 * width) && elt.x < (0.8 * width))
 
-	for(let i = newFishes.length; i < (Math.floor(score / 30)); i++) {
+	for(let i = newFishes.length; i < (1 + Math.floor(score / 70)); i++) {
 		newFishes.push({
 			index: Math.floor(Math.random() * 9),
 			x: Math.floor(0.75 * width),
@@ -64,6 +64,17 @@ function recalcFishes(score, fishes, width, height) {
 }
 
 function calcCollisions(state) {
+	let lost = state.fishes.filter((fish) =>
+		(
+			(fish.x >= state.submarineX && fish.x <= (state.submarineX + TORPEDO_SIZE)) ||
+			(state.submarineX >= fish.x && state.submarineX <= (fish.x + FISH_SIZE))
+		) &&
+		(
+			(fish.y >= state.submarineY && fish.y <= (state.submarineY + TORPEDO_SIZE)) ||
+			(state.submarineY >= fish.y && state.submarineY <= (fish.y + FISH_SIZE))
+		)
+	).length > 0
+
 	const newProjectiles = state.projectiles.filter((projectile) =>
 		state.fishes.filter((fish) =>
 			(
@@ -90,15 +101,13 @@ function calcCollisions(state) {
 		).length === 0
 	);
 
-	let lost = false;
-
 	// TODO: sound if explode
 	// TODO: show explosion
 
 	return [
 		newProjectiles,
 		newFishes,
-		lost,
+		lost || state.lost,
 		state.score + (state.fishes.length - newFishes.length) * FISH_SCORE
 	]
 }
@@ -110,7 +119,7 @@ export default function calcGameLoop(width, height, keyboard, state) {
 		submarineX: state.submarineX,
 		submarineY: state.submarineY,
 		score: state.score + 0.3,
-		lost: false
+		lost: state.lost
 	};
 
 	// Recalc physic
