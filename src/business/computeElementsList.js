@@ -65,7 +65,7 @@ export default function computeElementsList(width, height, state) {
 			y: state.submarineY,
 			width: 75,
 			height: 75,
-			zIndex: 10,
+			zIndex: 100,
 			draggable: false,
 			src: SUBMARINE_SRC
 		}),
@@ -78,7 +78,7 @@ export default function computeElementsList(width, height, state) {
 				y: elt.y,
 				width: 25,
 				height: 25,
-				zIndex: 15,
+				zIndex: 101,
 				draggable: false,
 				src: TORPEDO_SRC
 			})
