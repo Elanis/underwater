@@ -55,10 +55,10 @@ export default function App() {
 				src: TORPEDO_SRC
 			})
 		),
-		...Array.from({length: 100}, (elt, i) =>
+		...Array.from({length: Math.ceil(width/50) * 2}, (elt, i) =>
 			new CanvasImage({
 				id: `ground-${i}`,
-				x: (-1.5 * width) + 50 * i - ((Date.now() / 25) % 50),
+				x: (-0.5 * width) + 50 * i - ((Date.now() / 25) % 50),
 				y: height / 2 - 50,
 				width: 50,
 				height: 50,
