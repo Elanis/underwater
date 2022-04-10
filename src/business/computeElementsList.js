@@ -5,6 +5,7 @@ const BG_GROUND_2_SRC = 'img/bg-sand-2.png';
 const BG_GROUND_3_SRC = 'img/bg-sand-3.png';
 const DIGIT_SRC = (i) => `img/numbers/${i}.png`;
 const FG_GROUND_SRC = 'img/fg-sand.png';
+const FISH_SRC = (i) => `img/fish/${i}.png`;
 const PLANT_SRC = (i) => `img/plants/${i}.png`;
 const SUBMARINE_SRC = 'img/submarine.png';
 const TORPEDO_SRC = 'img/torpedo.png';
@@ -15,6 +16,7 @@ preloadImages([
 	BG_GROUND_3_SRC,
 	...Array.from({ length: 10}, (_, i) => DIGIT_SRC(i)),
 	FG_GROUND_SRC,
+	...Array.from({ length: 12}, (_, i) => FISH_SRC(i)),
 	...Array.from({ length: 24}, (_, i) => PLANT_SRC(i + 1)),
 	SUBMARINE_SRC,
 	TORPEDO_SRC,
@@ -63,8 +65,8 @@ export default function computeElementsList(width, height, state) {
 			id: 'submarine',
 			x: -width * 0.4,
 			y: state.submarineY,
-			width: 75,
-			height: 75,
+			width: 100,
+			height: 100,
 			zIndex: 100,
 			draggable: false,
 			src: SUBMARINE_SRC
@@ -76,8 +78,8 @@ export default function computeElementsList(width, height, state) {
 				id: `torp-${i}`,
 				x: elt.x,
 				y: elt.y,
-				width: 25,
-				height: 25,
+				width: 30,
+				height: 30,
 				zIndex: 101,
 				draggable: false,
 				src: TORPEDO_SRC
@@ -107,6 +109,20 @@ export default function computeElementsList(width, height, state) {
 				zIndex: 14,
 				draggable: false,
 				src: PLANT_SRC((i%24) + 1)
+			})
+		),
+
+		// FISHES
+		...state.fishes.map((elt, i) =>
+			new CanvasImage({
+				id: `fish-${elt.index}`,
+				x: elt.x,
+				y: elt.y,
+				width: 50,
+				height: 50,
+				zIndex: 100,
+				draggable: false,
+				src: FISH_SRC(elt.index%12)
 			})
 		),
 
