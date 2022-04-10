@@ -1,14 +1,38 @@
 import { CanvasImage, preloadImages } from 'canvas2d-wrapper';
 
+const DIGIT_SRC = (i) => `img/numbers/${i}.png`;
 const GROUND_SRC = 'img/fishTile_003.png';
 const SUBMARINE_SRC = 'img/submarine.png';
 const TORPEDO_SRC = 'img/torpedo.png';
 
 preloadImages([
+	...Array.from({ length: 10}, (_, i) => DIGIT_SRC(i)),
 	GROUND_SRC,
 	SUBMARINE_SRC,
 	TORPEDO_SRC,
 ]);
+
+function computeScoreTiles(width, height, score) {
+	const scoreTiles = [];
+	const digits = Math.floor(score).toString().split('');
+	for(let i = digits.length - 1; i >= 0; i--) {
+		scoreTiles.push(
+			new CanvasImage({
+				id: `digit-${i}`,
+				x: width / 2 - 25 - (digits.length - i) * 45,
+				y: -height / 2,
+				width: 45,
+				height: 45,
+				zIndex: 15,
+				draggable: false,
+				src: DIGIT_SRC(digits[i])
+			})
+		);
+	}
+
+
+	return scoreTiles;
+}
 
 export default function computeElementsList(width, height, state) {
 	return [
@@ -45,6 +69,7 @@ export default function computeElementsList(width, height, state) {
 				draggable: false,
 				src: GROUND_SRC
 			})
-		)
+		),
+		...computeScoreTiles(width, height, state.score)
 	];
 }

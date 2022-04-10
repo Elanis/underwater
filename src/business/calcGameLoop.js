@@ -28,7 +28,8 @@ let lastTorp = Date.now();
 const TORP_INTERVAL = 500;
 export default function calcGameLoop(width, height, keyboard, state) {
 	const newState = {
-		submarineY: state.submarineY
+		submarineY: state.submarineY,
+		score: state.score + 0.3,
 	};
 
 	// Recalc physic

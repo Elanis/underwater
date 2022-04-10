@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Canvas2D, CanvasImage, Circle, Polygon, Rect, preloadImages } from 'canvas2d-wrapper'
+import { Canvas2D } from 'canvas2d-wrapper'
 
 import calcGameLoop from './business/calcGameLoop';
 import computeElementsList from './business/computeElementsList';
@@ -10,22 +10,13 @@ import useWindowDimensions from './hooks/useWindowDimensions';
 
 import './App.css';
 
-const GROUND_SRC = 'img/fishTile_003.png';
-const SUBMARINE_SRC = 'img/submarine.png';
-const TORPEDO_SRC = 'img/torpedo.png';
-
-preloadImages([
-	GROUND_SRC,
-	SUBMARINE_SRC,
-	TORPEDO_SRC,
-]);
-
 let lastUpdate = Date.now();
 
 export default function App() {
 	const { width, height } = useWindowDimensions();
 	const [_, setShouldReRender] = useState(0);
 	const [state, setState] = useState({
+		score: 0,
 		submarineY: 0,
 		projectiles: [],
 	});
