@@ -70,7 +70,7 @@ export default function App() {
 	];
 
 	const render = () => {
-		if((Date.now() - lastUpdate) < 30) {
+		if((Date.now() - lastUpdate) < 15) {
 			return;
 		}
 
