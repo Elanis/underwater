@@ -158,7 +158,7 @@ export default function computeElementsList(width, height, state) {
 		...Array.from({length: Math.ceil(width/BG_GROUND_1_SIZE) * 2}, (elt, i) =>
 			new CanvasImage({
 				id: `bg-ground-1-${i}`,
-				x: (-0.5 * width) + BG_GROUND_1_SIZE * i - ((Date.now() / 25) % BG_GROUND_1_SIZE),
+				x: (-0.5 * width) + BG_GROUND_1_SIZE * i - ((Date.now() / 30) % BG_GROUND_1_SIZE),
 				y: height / 2 - BG_GROUND_1_SIZE + 25,
 				width: BG_GROUND_1_SIZE,
 				height: BG_GROUND_1_SIZE,
@@ -170,7 +170,7 @@ export default function computeElementsList(width, height, state) {
 		...Array.from({length: Math.ceil(width/BG_GROUND_2_SIZE) * 2}, (elt, i) =>
 			new CanvasImage({
 				id: `bg-ground-2-${i}`,
-				x: (-0.5 * width) + BG_GROUND_2_SIZE * i - ((Date.now() / 25) % BG_GROUND_2_SIZE) + 13,
+				x: (-0.5 * width) + BG_GROUND_2_SIZE * i - ((Date.now() / 35) % BG_GROUND_2_SIZE) + 13,
 				y: height / 2 - BG_GROUND_2_SIZE + 25,
 				width: BG_GROUND_2_SIZE,
 				height: BG_GROUND_2_SIZE,
@@ -182,7 +182,7 @@ export default function computeElementsList(width, height, state) {
 		...Array.from({length: Math.ceil(width/BG_GROUND_3_SIZE) * 2}, (elt, i) =>
 			new CanvasImage({
 				id: `bg-ground-3-${i}`,
-				x: (-0.5 * width) + BG_GROUND_3_SIZE * i - ((Date.now() / 25) % BG_GROUND_3_SIZE) + 7,
+				x: (-0.5 * width) + BG_GROUND_3_SIZE * i - ((Date.now() / 40) % BG_GROUND_3_SIZE) + 7,
 				y: height / 2 - BG_GROUND_3_SIZE + 20,
 				width: BG_GROUND_3_SIZE,
 				height: BG_GROUND_3_SIZE,
