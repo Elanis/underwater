@@ -37,6 +37,12 @@
 	}
 }
 
+.main-menu-hint {
+	font-size: 1.5rem !important;
+	margin-top: -2em;
+	margin-bottom: 2rem !important;
+}
+
 .main-menu-link:hover {
 	font-weight: bold;
 	cursor: pointer;
