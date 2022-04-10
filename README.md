@@ -1,5 +1,7 @@
 # Underwater
 
+[Itch.io](https://elanis.itch.io/underwater)
+
 Small gamejam game for [Game Dev Unlocked Game Jam #4](https://itch.io/jam/game-dev-unlocked-game-jam-4/rate/1480653).
 
 External assets:
