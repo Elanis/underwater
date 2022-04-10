@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Game from './components/Game';
 import MainMenu from './components/MainMenu';
 import Credits from './components/Credits';
+import Controls from './components/Controls';
 
 import { startMusic } from './business/audio.js';
 
@@ -13,6 +14,7 @@ startMusic();
 const VIEW_GAME 			= 0;
 const VIEW_MENU 			= 10;
 const VIEW_CREDITS  		= 20;
+const VIEW_CONTROLS  		= 30;
 
 let quit_target = VIEW_MENU;
 
@@ -40,6 +42,9 @@ export default function App() {
 		case VIEW_GAME:
 			content = <Game quit={back} />;
 			break;
+		case VIEW_CONTROLS:
+			content = <Controls quit={back} />;
+			break;
 		case VIEW_CREDITS:
 			content = <Credits quit={back} />;
 			break;
@@ -47,6 +52,7 @@ export default function App() {
 			content = (
 				<MainMenu
 					openGame={() => setCurrentView(VIEW_GAME)}
+					openControls={() => setCurrentView(VIEW_CONTROLS)}
 					openCredit={() => setCurrentView(VIEW_CREDITS)}
 				/>
 			);

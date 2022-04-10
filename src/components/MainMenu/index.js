@@ -2,12 +2,13 @@ import openLink from '../../business/openLink';
 
 import '../Menu.css';
 
-export default function MainMenu({ openGame, openCredit }) {
+export default function MainMenu({ openGame, openControls, openCredit }) {
 	return (
 		<>
 			<div className="main-menu">
 				<p className="main-menu-title"><h1>Underwater</h1></p>
 				<p className="main-menu-link" onClick={openGame}>Game</p>
+				<p className="main-menu-link" onClick={openControls}>Controls</p>
 				<p className="main-menu-link" onClick={openCredit}>Credits</p>
 			</div>
 

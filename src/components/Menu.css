@@ -1,4 +1,4 @@
-.main-menu, .menu-credits {
+.main-menu, .menu-credits, .menu-controls {
 	width: 100vw;
 	height: 100vh;
 
@@ -67,21 +67,21 @@
 /**
  * Credits
  */
-.menu-credits ul {
+.menu-credits ul, .menu-controls ul {
 	list-style: none;
 }
 
-.menu-credits li {
+.menu-credits li, .menu-controls li {
 	color: white;
 }
-.menu-credits a {
+.menu-credits a, .menu-controls a {
 	text-decoration: none;
 	color: white;
 }
 #credits-backToMenu a {
 	font-size: 1.5rem;
 }
-.menu-credits a:hover {
+.menu-credits a:hover, .menu-controls a:hover {
 	font-weight: bold;
 }
 #credits-backToMenu {
@@ -91,6 +91,17 @@
 	position: fixed;
 	right: 1rem;
 	bottom: 1rem;
+}
+
+.menu-controls {
+	padding-top: 3rem;
+}
+.menu-controls img {
+	width: 125px;
+	margin-right: 2rem;
+}
+.menu-controls * {
+	vertical-align: middle;
 }
 
 /**
