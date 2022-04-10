@@ -11,28 +11,24 @@ import useWindowDimensions from './hooks/useWindowDimensions';
 import './App.css';
 
 let lastUpdate = Date.now();
-
 export default function App() {
 	const { width, height } = useWindowDimensions();
-	const [_, setShouldReRender] = useState(0);
 	const [state, setState] = useState({
 		score: 0,
 		submarineY: 0,
 		projectiles: [],
+		fishes: [],
 	});
 	const keyboard = useKeyboard();
 
 	const render = () => {
-		if((Date.now() - lastUpdate) < 10) {
-			//setTimeout(() => setShouldReRender(Date.now()), 15);
+		if((Date.now() - lastUpdate) < 15) {
 			return;
 		}
 
 		lastUpdate = Date.now();
 
 		setState(calcGameLoop(width, height, keyboard, state));
-
-		window.requestAnimationFrame(render);
 	};
 
 	window.requestAnimationFrame(render);
