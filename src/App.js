@@ -23,8 +23,8 @@ export default function App() {
 	const keyboard = useKeyboard();
 
 	const render = () => {
-		if((Date.now() - lastUpdate) < 15) {
-			setTimeout(() => setShouldReRender(Date.now()), 15);
+		if((Date.now() - lastUpdate) < 10) {
+			//setTimeout(() => setShouldReRender(Date.now()), 15);
 			return;
 		}
 
