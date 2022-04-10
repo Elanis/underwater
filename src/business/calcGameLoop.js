@@ -17,8 +17,8 @@ function computeSubmarinePos(height, keyboard, submarineY) {
 	let maxDeltaYPos = 0.45 * height;
 	if(newY < -maxDeltaYPos) {
 		newY = -maxDeltaYPos;
-	} else if(newY > maxDeltaYPos) {
-		newY = maxDeltaYPos;
+	} else if(newY > (maxDeltaYPos - 75)) { // 75 = submarine size
+		newY = maxDeltaYPos - 75;
 	}
 
 	return newY;
