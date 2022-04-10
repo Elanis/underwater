@@ -12,13 +12,20 @@ function recalcProjectiles(projectiles, width) {
 	}).filter((elt) => elt.x < width * 1.5);
 }
 
-function computeSubmarinePos(height, keyboard, submarineY) {
+function computeSubmarinePos(width, height, keyboard, submarineX, submarineY) {
+	let newX = 0 + submarineX;
 	let newY = 0 + submarineY;
 	if(keyboard['ArrowUp']) {
 		newY -= 10;
 	}
 	if(keyboard['ArrowDown']) {
 		newY += 10;
+	}
+	if(keyboard['ArrowLeft']) {
+		newX -= 10;
+	}
+	if(keyboard['ArrowRight']) {
+		newX += 10;
 	}
 
 	let maxDeltaYPos = 0.45 * height;
@@ -28,7 +35,14 @@ function computeSubmarinePos(height, keyboard, submarineY) {
 		newY = maxDeltaYPos - 100;
 	}
 
-	return newY;
+	let maxDeltaXPos = 0.45 * width;
+	if(newX < -maxDeltaXPos) {
+		newX = -maxDeltaXPos;
+	} else if(newX > (maxDeltaXPos - 100)) { // 100 = submarine size
+		newX = maxDeltaXPos - 100;
+	}
+
+	return [newX, newY];
 }
 
 function recalcFishes(score, fishes, width, height) {
@@ -93,6 +107,7 @@ let lastTorp = Date.now();
 const TORP_INTERVAL = 500;
 export default function calcGameLoop(width, height, keyboard, state) {
 	const newState = {
+		submarineX: state.submarineX,
 		submarineY: state.submarineY,
 		score: state.score + 0.3,
 		lost: false
@@ -104,14 +119,14 @@ export default function calcGameLoop(width, height, keyboard, state) {
 	// Fishes
 	newState.fishes = recalcFishes(newState.score, state.fishes, width, height);
 
+	// Keyboard
+	[newState.submarineX, newState.submarineY] = computeSubmarinePos(width, height, keyboard, state.submarineX, state.submarineY);
+
 	// Collisions
 	[ newState.projectiles, newState.fishes, newState.lost, newState.score ] = calcCollisions(newState);
 
-	// Keyboard
-	newState.submarineY = computeSubmarinePos(height, keyboard, state.submarineY);
-
 	if(keyboard[' '] && (Date.now() - lastTorp) > TORP_INTERVAL) {
-		newState.projectiles.push({x: (-width * 0.4) + 80, y: newState.submarineY + 50 });
+		newState.projectiles.push({x: newState.submarineX + 80, y: newState.submarineY + 50 });
 		lastTorp = Date.now();
 	}
 

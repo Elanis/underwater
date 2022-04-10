@@ -75,7 +75,7 @@ export default function computeElementsList(width, height, state) {
 		// SUBMARINE
 		new CanvasImage({
 			id: 'submarine',
-			x: -width * 0.4,
+			x: state.submarineX,
 			y: state.submarineY,
 			width: SUBMARINE_SIZE,
 			height: SUBMARINE_SIZE,
