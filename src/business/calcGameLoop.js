@@ -1,5 +1,6 @@
 import {
 	FISH_SIZE,
+	SUBMARINE_SIZE,
 	TORPEDO_SIZE,
 } from '../constants/sizes.js';
 
@@ -66,11 +67,11 @@ function recalcFishes(score, fishes, width, height) {
 function calcCollisions(state) {
 	let lost = state.fishes.filter((fish) =>
 		(
-			(fish.x >= state.submarineX && fish.x <= (state.submarineX + TORPEDO_SIZE)) ||
+			(fish.x >= state.submarineX && fish.x <= (state.submarineX + SUBMARINE_SIZE)) ||
 			(state.submarineX >= fish.x && state.submarineX <= (fish.x + FISH_SIZE))
 		) &&
 		(
-			(fish.y >= state.submarineY && fish.y <= (state.submarineY + TORPEDO_SIZE)) ||
+			(fish.y >= state.submarineY && fish.y <= (state.submarineY + SUBMARINE_SIZE)) ||
 			(state.submarineY >= fish.y && state.submarineY <= (fish.y + FISH_SIZE))
 		)
 	).length > 0
