@@ -75,8 +75,9 @@ function calcCollisions(state) {
 		)
 	).length > 0
 
-	const newProjectiles = state.projectiles.filter((projectile) =>
-		state.fishes.filter((fish) =>
+	let positions = [];
+	const newProjectiles = state.projectiles.filter((projectile) => {
+		let collisionning = state.fishes.filter((fish) =>
 			(
 				(fish.x >= projectile.x && fish.x <= (projectile.x + TORPEDO_SIZE)) ||
 				(projectile.x >= fish.x && projectile.x <= (fish.x + FISH_SIZE))
@@ -85,8 +86,12 @@ function calcCollisions(state) {
 				(fish.y >= projectile.y && fish.y <= (projectile.y + TORPEDO_SIZE)) ||
 				(projectile.y >= fish.y && projectile.y <= (fish.y + FISH_SIZE))
 			)
-		).length === 0
-	);
+		);
+
+		positions = [...positions, ...collisionning];
+
+		return collisionning.length === 0;
+	});
 
 	const newFishes = state.fishes.filter((fish) =>
 		state.projectiles.filter((projectile) =>
@@ -102,14 +107,30 @@ function calcCollisions(state) {
 	);
 
 	// TODO: sound if explode
-	// TODO: show explosion
+	const newExplosions = [...state.explosions];
+	for(const position of positions) {
+		newExplosions.push({
+			x: position.x + FISH_SIZE / 2,
+			y: position.y + FISH_SIZE / 2,
+			radius: 5,
+			index: Math.round(Math.random() * 7),
+		})
+	}
 
 	return [
 		newProjectiles,
 		newFishes,
+		newExplosions,
 		lost || state.lost,
 		state.score + (state.fishes.length - newFishes.length) * FISH_SCORE
 	]
+}
+
+function recalcExplosive(explosions) {
+	return explosions.map((explosion) => {
+		explosion.radius += 3;
+		return explosion;
+	}).filter((elt) => elt.radius < 75);
 }
 
 let lastTorp = Date.now();
@@ -120,10 +141,10 @@ export default function calcGameLoop(width, height, keyboard, state) {
 	}
 
 	const newState = {
+		lost: state.lost,
+		score: state.score + 0.3,
 		submarineX: state.submarineX,
 		submarineY: state.submarineY,
-		score: state.score + 0.3,
-		lost: state.lost
 	};
 
 	// Recalc physic
@@ -135,8 +156,11 @@ export default function calcGameLoop(width, height, keyboard, state) {
 	// Keyboard
 	[newState.submarineX, newState.submarineY] = computeSubmarinePos(width, height, keyboard, state.submarineX, state.submarineY);
 
+	// Explosves
+	newState.explosions = recalcExplosive(state.explosions);
+
 	// Collisions
-	[ newState.projectiles, newState.fishes, newState.lost, newState.score ] = calcCollisions(newState);
+	[ newState.projectiles, newState.fishes, newState.explosions, newState.lost, newState.score ] = calcCollisions(newState);
 
 	if(keyboard[' '] && (Date.now() - lastTorp) > TORP_INTERVAL) {
 		newState.projectiles.push({x: newState.submarineX + 80, y: newState.submarineY + 50 });

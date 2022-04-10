@@ -14,12 +14,13 @@ let lastUpdate = Date.now();
 export default function Game({ quit }) {
 	const { width, height } = useWindowDimensions();
 	const [state, setState] = useState({
+		explosions: [],
+		fishes: [],
+		lost: false,
+		projectiles: [],
 		score: 0,
 		submarineX: -width * 0.4, 
 		submarineY: 0,
-		projectiles: [],
-		fishes: [],
-		lost: false,
 	});
 	const keyboard = useKeyboard();
 

@@ -16,6 +16,7 @@ const BG_GROUND_1_SRC = 'img/bg-sand-1.png';
 const BG_GROUND_2_SRC = 'img/bg-sand-2.png';
 const BG_GROUND_3_SRC = 'img/bg-sand-3.png';
 const DIGIT_SRC = (i) => `img/numbers/${i}.png`;
+const EXPLOSIVE_SRC = (i) => `img/explosion/${i}.png`;
 const FG_GROUND_SRC = 'img/fg-sand.png';
 const FISH_SRC = (i) => `img/fish/${i}.png`;
 const PLANT_SRC = (i) => `img/plants/${i}.png`;
@@ -27,6 +28,7 @@ preloadImages([
 	BG_GROUND_2_SRC,
 	BG_GROUND_3_SRC,
 	...Array.from({ length: 10}, (_, i) => DIGIT_SRC(i)),
+	...Array.from({ length: 8}, (_, i) => EXPLOSIVE_SRC(i)),
 	FG_GROUND_SRC,
 	...Array.from({ length: 12}, (_, i) => FISH_SRC(i)),
 	...Array.from({ length: 24}, (_, i) => PLANT_SRC(i + 1)),
@@ -95,6 +97,20 @@ export default function computeElementsList(width, height, state) {
 				zIndex: 101,
 				draggable: false,
 				src: TORPEDO_SRC
+			})
+		),
+
+		// EXPLOSIONS
+		...state.explosions.map((elt, i) =>
+			new CanvasImage({
+				id: `explosion-${i}`,
+				x: elt.x - elt.radius/2,
+				y: elt.y - elt.radius/2,
+				width: elt.radius,
+				height: elt.radius,
+				zIndex: 102,
+				draggable: false,
+				src: EXPLOSIVE_SRC(elt.index)
 			})
 		),
 
