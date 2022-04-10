@@ -1,0 +1,9 @@
+export const BG_GROUND_1_SIZE = 100;
+export const BG_GROUND_2_SIZE = 125;
+export const BG_GROUND_3_SIZE = 150;
+export const DIGIT_SIZE = 45;
+export const FG_GROUND_SIZE = 50;
+export const FISH_SIZE = 50;
+export const PLANT_SIZE = 50;
+export const SUBMARINE_SIZE = 100;
+export const TORPEDO_SIZE = 30;

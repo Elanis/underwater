@@ -1,5 +1,17 @@
 import { CanvasImage, preloadImages } from 'canvas2d-wrapper';
 
+import {
+	BG_GROUND_1_SIZE,
+	BG_GROUND_2_SIZE,
+	BG_GROUND_3_SIZE,
+	DIGIT_SIZE,
+	FG_GROUND_SIZE,
+	FISH_SIZE,
+	PLANT_SIZE,
+	SUBMARINE_SIZE,
+	TORPEDO_SIZE,
+} from '../constants/sizes.js';
+
 const BG_GROUND_1_SRC = 'img/bg-sand-1.png';
 const BG_GROUND_2_SRC = 'img/bg-sand-2.png';
 const BG_GROUND_3_SRC = 'img/bg-sand-3.png';
@@ -31,8 +43,8 @@ function computeScoreTiles(width, height, score) {
 				id: `digit-${i}`,
 				x: width / 2 - 25 - (digits.length - i) * 45,
 				y: -height / 2,
-				width: 45,
-				height: 45,
+				width: DIGIT_SIZE,
+				height: DIGIT_SIZE,
 				zIndex: 15,
 				draggable: false,
 				src: DIGIT_SRC(digits[i])
@@ -65,8 +77,8 @@ export default function computeElementsList(width, height, state) {
 			id: 'submarine',
 			x: -width * 0.4,
 			y: state.submarineY,
-			width: 100,
-			height: 100,
+			width: SUBMARINE_SIZE,
+			height: SUBMARINE_SIZE,
 			zIndex: 100,
 			draggable: false,
 			src: SUBMARINE_SRC
@@ -78,8 +90,8 @@ export default function computeElementsList(width, height, state) {
 				id: `torp-${i}`,
 				x: elt.x,
 				y: elt.y,
-				width: 30,
-				height: 30,
+				width: TORPEDO_SIZE,
+				height: TORPEDO_SIZE,
 				zIndex: 101,
 				draggable: false,
 				src: TORPEDO_SRC
@@ -87,25 +99,25 @@ export default function computeElementsList(width, height, state) {
 		),
 
 		// GROUND & PLANTS
-		...Array.from({length: Math.ceil(width/50) * 2}, (elt, i) =>
+		...Array.from({length: Math.ceil(width/FG_GROUND_SIZE) * 2}, (elt, i) =>
 			new CanvasImage({
 				id: `fg-ground-${i}`,
-				x: (-0.5 * width) + 50 * i - ((Date.now() / 25) % 50),
-				y: height / 2 - 50,
-				width: 50,
-				height: 50,
+				x: (-0.5 * width) + FG_GROUND_SIZE * i - ((Date.now() / 25) % FG_GROUND_SIZE),
+				y: height / 2 - FG_GROUND_SIZE,
+				width: FG_GROUND_SIZE,
+				height: FG_GROUND_SIZE,
 				zIndex: 15,
 				draggable: false,
 				src: FG_GROUND_SRC
 			})
 		),
-		...Array.from({length: Math.ceil(width/50)}, (elt, i) =>
+		...Array.from({length: Math.ceil(width/PLANT_SIZE)}, (elt, i) =>
 			new CanvasImage({
 				id: `plant-${i}`,
 				x: getPlantPos(width, i),
-				y: height / 2 - 50 - 45,
-				width: 50,
-				height: 50,
+				y: height / 2 - PLANT_SIZE - FG_GROUND_SIZE + 5,
+				width: PLANT_SIZE,
+				height: PLANT_SIZE,
 				zIndex: 14,
 				draggable: false,
 				src: PLANT_SRC((i%24) + 1)
@@ -118,8 +130,8 @@ export default function computeElementsList(width, height, state) {
 				id: `fish-${elt.index}`,
 				x: elt.x,
 				y: elt.y,
-				width: 50,
-				height: 50,
+				width: FISH_SIZE,
+				height: FISH_SIZE,
 				zIndex: 100,
 				draggable: false,
 				src: FISH_SRC(elt.index%12)
@@ -127,37 +139,37 @@ export default function computeElementsList(width, height, state) {
 		),
 
 		// BACKGROUND #1 - SAND
-		...Array.from({length: Math.ceil(width/100) * 2}, (elt, i) =>
+		...Array.from({length: Math.ceil(width/BG_GROUND_1_SIZE) * 2}, (elt, i) =>
 			new CanvasImage({
 				id: `bg-ground-1-${i}`,
-				x: (-0.5 * width) + 100 * i - ((Date.now() / 25) % 100),
-				y: height / 2 - 75,
-				width: 100,
-				height: 100,
+				x: (-0.5 * width) + BG_GROUND_1_SIZE * i - ((Date.now() / 25) % BG_GROUND_1_SIZE),
+				y: height / 2 - BG_GROUND_1_SIZE + 25,
+				width: BG_GROUND_1_SIZE,
+				height: BG_GROUND_1_SIZE,
 				zIndex: 12,
 				draggable: false,
 				src: BG_GROUND_1_SRC
 			})
 		),
-		...Array.from({length: Math.ceil(width/125) * 2}, (elt, i) =>
+		...Array.from({length: Math.ceil(width/BG_GROUND_2_SIZE) * 2}, (elt, i) =>
 			new CanvasImage({
 				id: `bg-ground-2-${i}`,
-				x: (-0.5 * width) + 125 * i - ((Date.now() / 25) % 125) + 13,
-				y: height / 2 - 100,
-				width: 125,
-				height: 125,
+				x: (-0.5 * width) + BG_GROUND_2_SIZE * i - ((Date.now() / 25) % BG_GROUND_2_SIZE) + 13,
+				y: height / 2 - BG_GROUND_2_SIZE + 25,
+				width: BG_GROUND_2_SIZE,
+				height: BG_GROUND_2_SIZE,
 				zIndex: 11,
 				draggable: false,
 				src: BG_GROUND_2_SRC
 			})
 		),
-		...Array.from({length: Math.ceil(width/150) * 2}, (elt, i) =>
+		...Array.from({length: Math.ceil(width/BG_GROUND_3_SIZE) * 2}, (elt, i) =>
 			new CanvasImage({
 				id: `bg-ground-3-${i}`,
-				x: (-0.5 * width) + 150 * i - ((Date.now() / 25) % 150) + 7,
-				y: height / 2 - 130,
-				width: 150,
-				height: 150,
+				x: (-0.5 * width) + BG_GROUND_3_SIZE * i - ((Date.now() / 25) % BG_GROUND_3_SIZE) + 7,
+				y: height / 2 - BG_GROUND_3_SIZE + 20,
+				width: BG_GROUND_3_SIZE,
+				height: BG_GROUND_3_SIZE,
 				zIndex: 10,
 				draggable: false,
 				src: BG_GROUND_3_SRC
