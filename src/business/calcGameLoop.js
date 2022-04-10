@@ -115,6 +115,10 @@ function calcCollisions(state) {
 let lastTorp = Date.now();
 const TORP_INTERVAL = 500;
 export default function calcGameLoop(width, height, keyboard, state) {
+	if(state.lost) {
+		return state;
+	}
+
 	const newState = {
 		submarineX: state.submarineX,
 		submarineY: state.submarineY,

@@ -1,54 +1,60 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Canvas2D } from 'canvas2d-wrapper'
+import Game from './components/Game';
+import MainMenu from './components/MainMenu';
+import Credits from './components/Credits';
 
-import calcGameLoop from './business/calcGameLoop';
-import computeElementsList from './business/computeElementsList';
-
-import useKeyboard from './hooks/useKeyboard';
-import useWindowDimensions from './hooks/useWindowDimensions';
+import { startMusic } from './business/audio.js';
 
 import './App.css';
 
-let lastUpdate = Date.now();
+startMusic();
+
+const VIEW_GAME 			= 0;
+const VIEW_MENU 			= 10;
+const VIEW_CREDITS  		= 20;
+
+let quit_target = VIEW_MENU;
+
 export default function App() {
-	const { width, height } = useWindowDimensions();
-	const [state, setState] = useState({
-		score: 0,
-		submarineX: -width * 0.4, 
-		submarineY: 0,
-		projectiles: [],
-		fishes: [],
-		lost: false,
-	});
-	const keyboard = useKeyboard();
+	const [currentView, setCurrentView] = useState(VIEW_MENU);
 
-	const render = () => {
-		if((Date.now() - lastUpdate) < 15) {
-			return;
+	const back = () => setCurrentView(quit_target);
+	const backFromKeyboard = (e) => {
+		if (e.keyCode === 27) {
+			setCurrentView(quit_target);
 		}
-
-		lastUpdate = Date.now();
-
-		setState(calcGameLoop(width, height, keyboard, state));
 	};
 
-	window.requestAnimationFrame(render);
+	useEffect(() => {
+		document.addEventListener('keydown', backFromKeyboard, false);
 
-	if(state.lost) {
-		return <span>Lost</span>
+		return () => {
+			document.removeEventListener('keydown', backFromKeyboard, false);
+		};
+	}, []);
+
+	quit_target = VIEW_MENU;
+	let content = null;
+	switch(currentView) {
+		case VIEW_GAME:
+			content = <Game quit={back} />;
+			break;
+		case VIEW_CREDITS:
+			content = <Credits quit={back} />;
+			break;
+		default:
+			content = (
+				<MainMenu
+					openGame={() => setCurrentView(VIEW_GAME)}
+					openCredit={() => setCurrentView(VIEW_CREDITS)}
+				/>
+			);
 	}
 
 	return (
-		<Canvas2D
-			elements={computeElementsList(width, height, state)}
-			width={width}
-			height={height}
-			minZoom={1}
-			maxZoom={1}
-			tileSize={1}
-			lockXAxis={true}
-			lockYAxis={true}
-		/>
+		<>
+			{content}
+		</>
 	);
 }
