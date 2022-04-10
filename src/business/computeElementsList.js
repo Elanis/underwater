@@ -1,14 +1,20 @@
 import { CanvasImage, preloadImages } from 'canvas2d-wrapper';
 
+const BG_GROUND_1_SRC = 'img/bg-sand-1.png';
+const BG_GROUND_2_SRC = 'img/bg-sand-2.png';
+const BG_GROUND_3_SRC = 'img/bg-sand-3.png';
 const DIGIT_SRC = (i) => `img/numbers/${i}.png`;
-const GROUND_SRC = 'img/fishTile_003.png';
+const FG_GROUND_SRC = 'img/fg-sand.png';
 const PLANT_SRC = (i) => `img/plants/${i}.png`;
 const SUBMARINE_SRC = 'img/submarine.png';
 const TORPEDO_SRC = 'img/torpedo.png';
 
 preloadImages([
+	BG_GROUND_1_SRC,
+	BG_GROUND_2_SRC,
+	BG_GROUND_3_SRC,
 	...Array.from({ length: 10}, (_, i) => DIGIT_SRC(i)),
-	GROUND_SRC,
+	FG_GROUND_SRC,
 	...Array.from({ length: 24}, (_, i) => PLANT_SRC(i + 1)),
 	SUBMARINE_SRC,
 	TORPEDO_SRC,
@@ -52,6 +58,7 @@ function getPlantPos(width, i) {
 
 export default function computeElementsList(width, height, state) {
 	return [
+		// SUBMARINE
 		new CanvasImage({
 			id: 'submarine',
 			x: -width * 0.4,
@@ -62,6 +69,8 @@ export default function computeElementsList(width, height, state) {
 			draggable: false,
 			src: SUBMARINE_SRC
 		}),
+
+		// TORPEDOES
 		...state.projectiles.map((elt, i) =>
 			new CanvasImage({
 				id: `torp-${i}`,
@@ -74,16 +83,18 @@ export default function computeElementsList(width, height, state) {
 				src: TORPEDO_SRC
 			})
 		),
+
+		// GROUND & PLANTS
 		...Array.from({length: Math.ceil(width/50) * 2}, (elt, i) =>
 			new CanvasImage({
-				id: `ground-${i}`,
+				id: `fg-ground-${i}`,
 				x: (-0.5 * width) + 50 * i - ((Date.now() / 25) % 50),
 				y: height / 2 - 50,
 				width: 50,
 				height: 50,
 				zIndex: 15,
 				draggable: false,
-				src: GROUND_SRC
+				src: FG_GROUND_SRC
 			})
 		),
 		...Array.from({length: Math.ceil(width/50)}, (elt, i) =>
@@ -98,6 +109,46 @@ export default function computeElementsList(width, height, state) {
 				src: PLANT_SRC((i%24) + 1)
 			})
 		),
+
+		// BACKGROUND #1 - SAND
+		...Array.from({length: Math.ceil(width/100) * 2}, (elt, i) =>
+			new CanvasImage({
+				id: `bg-ground-1-${i}`,
+				x: (-0.5 * width) + 100 * i - ((Date.now() / 25) % 100),
+				y: height / 2 - 75,
+				width: 100,
+				height: 100,
+				zIndex: 12,
+				draggable: false,
+				src: BG_GROUND_1_SRC
+			})
+		),
+		...Array.from({length: Math.ceil(width/125) * 2}, (elt, i) =>
+			new CanvasImage({
+				id: `bg-ground-2-${i}`,
+				x: (-0.5 * width) + 125 * i - ((Date.now() / 25) % 125) + 13,
+				y: height / 2 - 100,
+				width: 125,
+				height: 125,
+				zIndex: 11,
+				draggable: false,
+				src: BG_GROUND_2_SRC
+			})
+		),
+		...Array.from({length: Math.ceil(width/150) * 2}, (elt, i) =>
+			new CanvasImage({
+				id: `bg-ground-3-${i}`,
+				x: (-0.5 * width) + 150 * i - ((Date.now() / 25) % 150) + 7,
+				y: height / 2 - 130,
+				width: 150,
+				height: 150,
+				zIndex: 10,
+				draggable: false,
+				src: BG_GROUND_3_SRC
+			})
+		),
+
+		// SCORE
 		...computeScoreTiles(width, height, state.score)
 	];
 }
