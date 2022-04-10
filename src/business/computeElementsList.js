@@ -2,12 +2,14 @@ import { CanvasImage, preloadImages } from 'canvas2d-wrapper';
 
 const DIGIT_SRC = (i) => `img/numbers/${i}.png`;
 const GROUND_SRC = 'img/fishTile_003.png';
+const PLANT_SRC = (i) => `img/plants/${i}.png`;
 const SUBMARINE_SRC = 'img/submarine.png';
 const TORPEDO_SRC = 'img/torpedo.png';
 
 preloadImages([
 	...Array.from({ length: 10}, (_, i) => DIGIT_SRC(i)),
 	GROUND_SRC,
+	...Array.from({ length: 24}, (_, i) => PLANT_SRC(i + 1)),
 	SUBMARINE_SRC,
 	TORPEDO_SRC,
 ]);
@@ -32,6 +34,20 @@ function computeScoreTiles(width, height, score) {
 
 
 	return scoreTiles;
+}
+
+function getPlantPos(width, i) {
+	if(!width) {
+		return 0;
+	}
+
+	let space =  Math.ceil(Math.abs(
+		0.05 * Math.pow((-1 * i), 3) + 0.1 * Math.pow((-1 * i), 2) + 10 * i + 100
+	));
+
+	let amount = Math.ceil(width / space) * 1.5;
+
+	return -((Date.now() / 25) % (amount * space)) + width/2;
 }
 
 export default function computeElementsList(width, height, state) {
@@ -68,6 +84,18 @@ export default function computeElementsList(width, height, state) {
 				zIndex: 15,
 				draggable: false,
 				src: GROUND_SRC
+			})
+		),
+		...Array.from({length: Math.ceil(width/50)}, (elt, i) =>
+			new CanvasImage({
+				id: `plant-${i}`,
+				x: getPlantPos(width, i),
+				y: height / 2 - 50 - 45,
+				width: 50,
+				height: 50,
+				zIndex: 14,
+				draggable: false,
+				src: PLANT_SRC((i%24) + 1)
 			})
 		),
 		...computeScoreTiles(width, height, state.score)
