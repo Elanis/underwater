@@ -11,3 +11,6 @@
 	font-weight: bold;
 	cursor: pointer;
 }
+.score-result-button:hover {
+	text-decoration: underline;
+}
