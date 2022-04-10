@@ -1,3 +1,10 @@
+import {
+	FISH_SIZE,
+	TORPEDO_SIZE,
+} from '../constants/sizes.js';
+
+const FISH_SCORE = 100;
+
 function recalcProjectiles(projectiles, width) {
 	return projectiles.map((elt) => {
 				elt.x += 5;
@@ -42,18 +49,63 @@ function recalcFishes(score, fishes, width, height) {
 	});
 }
 
+function calcCollisions(state) {
+	const newProjectiles = state.projectiles.filter((projectile) =>
+		state.fishes.filter((fish) =>
+			(
+				(fish.x >= projectile.x && fish.x <= (projectile.x + TORPEDO_SIZE)) ||
+				(projectile.x >= fish.x && projectile.x <= (fish.x + FISH_SIZE))
+			) &&
+			(
+				(fish.y >= projectile.y && fish.y <= (projectile.y + TORPEDO_SIZE)) ||
+				(projectile.y >= fish.y && projectile.y <= (fish.y + FISH_SIZE))
+			)
+		).length === 0
+	);
+
+	const newFishes = state.fishes.filter((fish) =>
+		state.projectiles.filter((projectile) =>
+			(
+				(fish.x >= projectile.x && fish.x <= (projectile.x + TORPEDO_SIZE)) ||
+				(projectile.x >= fish.x && projectile.x <= (fish.x + FISH_SIZE))
+			) &&
+			(
+				(fish.y >= projectile.y && fish.y <= (projectile.y + TORPEDO_SIZE)) ||
+				(projectile.y >= fish.y && projectile.y <= (fish.y + FISH_SIZE))
+			)
+		).length === 0
+	);
+
+	let lost = false;
+
+	// TODO: sound if explode
+	// TODO: show explosion
+
+	return [
+		newProjectiles,
+		newFishes,
+		lost,
+		state.score + (state.fishes.length - newFishes.length) * FISH_SCORE
+	]
+}
+
 let lastTorp = Date.now();
 const TORP_INTERVAL = 500;
 export default function calcGameLoop(width, height, keyboard, state) {
 	const newState = {
 		submarineY: state.submarineY,
 		score: state.score + 0.3,
+		lost: false
 	};
 
 	// Recalc physic
 	newState.projectiles = recalcProjectiles(state.projectiles, width);
 
-	// TODO: calc collisions
+	// Fishes
+	newState.fishes = recalcFishes(newState.score, state.fishes, width, height);
+
+	// Collisions
+	[ newState.projectiles, newState.fishes, newState.lost, newState.score ] = calcCollisions(newState);
 
 	// Keyboard
 	newState.submarineY = computeSubmarinePos(height, keyboard, state.submarineY);
@@ -62,8 +114,6 @@ export default function calcGameLoop(width, height, keyboard, state) {
 		newState.projectiles.push({x: (-width * 0.4) + 80, y: newState.submarineY + 50 });
 		lastTorp = Date.now();
 	}
-
-	newState.fishes = recalcFishes(newState.score, state.fishes, width, height);
 
 	return newState;
 }
