@@ -1,4 +1,4 @@
-import { CanvasImage, preloadImages } from 'canvas2d-wrapper';
+import { CanvasImage, Rect, preloadImages } from 'canvas2d-wrapper';
 
 import {
 	BG_GROUND_1_SIZE,
@@ -7,6 +7,7 @@ import {
 	DIGIT_SIZE,
 	FG_GROUND_SIZE,
 	FISH_SIZE,
+	FISH_MAX_SIZE,
 	PLANT_SIZE,
 	SUBMARINE_SIZE,
 	TORPEDO_SIZE,
@@ -85,6 +86,17 @@ export default function computeElementsList(width, height, state) {
 			draggable: false,
 			src: SUBMARINE_SRC
 		}),
+		/*Collision Debug:*/
+		/*new Rect({
+			id: `submarine-square`,
+			x: state.submarineX,
+			y: state.submarineY,
+			width: SUBMARINE_SIZE,
+			height: SUBMARINE_SIZE,
+			zIndex: 100,
+			draggable: false,
+			stroke: '#FF0000'
+		}),*/
 
 		// TORPEDOES
 		...state.projectiles.map((elt, i) =>
@@ -99,6 +111,20 @@ export default function computeElementsList(width, height, state) {
 				src: TORPEDO_SRC
 			})
 		),
+		/*Collision Debug:*/
+		/*
+		...state.projectiles.map((elt, i) => 
+			new Rect({
+				id: `torp-square-${elt.index}`,
+				x: elt.x,
+				y: elt.y,
+				width: TORPEDO_SIZE,
+				height: TORPEDO_SIZE,
+				zIndex: 101,
+				draggable: false,
+				stroke: '#FF0000'
+			})
+		),*/
 
 		// EXPLOSIONS
 		...state.explosions.map((elt, i) =>
@@ -141,18 +167,31 @@ export default function computeElementsList(width, height, state) {
 		),
 
 		// FISHES
-		...state.fishes.map((elt, i) =>
+		...state.fishes.map((elt, i) => 
 			new CanvasImage({
 				id: `fish-${elt.index}`,
 				x: elt.x,
 				y: elt.y,
-				width: FISH_SIZE,
-				height: FISH_SIZE,
+				width: FISH_MAX_SIZE,
+				height: FISH_MAX_SIZE,
 				zIndex: 100,
 				draggable: false,
 				src: FISH_SRC(elt.index%12)
 			})
 		),
+		/*Collision Debug:*/
+		/*...state.fishes.map((elt, i) => 
+			new Rect({
+				id: `square-${elt.index}`,
+				x: (FISH_MAX_SIZE - FISH_SIZE[elt.index%12].x) / 2 + elt.x,
+				y: (FISH_MAX_SIZE - FISH_SIZE[elt.index%12].y) / 2 + elt.y,
+				width: FISH_SIZE[elt.index%12].x,
+				height: FISH_SIZE[elt.index%12].y,
+				zIndex: 100,
+				draggable: false,
+				stroke: '#FF0000'
+			})
+		),*/
 
 		// BACKGROUND #1 - SAND
 		...Array.from({length: Math.ceil(width/BG_GROUND_1_SIZE) * 2}, (elt, i) =>

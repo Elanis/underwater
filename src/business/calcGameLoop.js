@@ -1,5 +1,6 @@
 import {
 	FISH_SIZE,
+	FISH_MAX_SIZE,
 	SUBMARINE_SIZE,
 	TORPEDO_SIZE,
 } from '../constants/sizes.js';
@@ -90,11 +91,11 @@ function calcCollisions(state) {
 	let lost = state.fishes.filter((fish) =>
 		(
 			(fish.x >= state.submarineX && fish.x <= (state.submarineX + SUBMARINE_SIZE)) ||
-			(state.submarineX >= fish.x && state.submarineX <= (fish.x + FISH_SIZE))
+			(state.submarineX >= fish.x && state.submarineX <= (fish.x + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%12].x) / 2) +  FISH_SIZE[fish.index%12].x))
 		) &&
 		(
 			(fish.y >= state.submarineY && fish.y <= (state.submarineY + SUBMARINE_SIZE)) ||
-			(state.submarineY >= fish.y && state.submarineY <= (fish.y + FISH_SIZE))
+			(state.submarineY >= fish.y && state.submarineY <= (fish.y + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%12].y) / 2) + FISH_SIZE[fish.index%12].y))
 		)
 	).length > 0
 
@@ -103,11 +104,11 @@ function calcCollisions(state) {
 		let collisionning = state.fishes.filter((fish) =>
 			(
 				(fish.x >= projectile.x && fish.x <= (projectile.x + TORPEDO_SIZE)) ||
-				(projectile.x >= fish.x && projectile.x <= (fish.x + FISH_SIZE))
+				(projectile.x >= fish.x && projectile.x <= (fish.x + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%12].x) / 2) + FISH_SIZE[fish.index%12].x))
 			) &&
 			(
 				(fish.y >= projectile.y && fish.y <= (projectile.y + TORPEDO_SIZE)) ||
-				(projectile.y >= fish.y && projectile.y <= (fish.y + FISH_SIZE))
+				(projectile.y >= fish.y && projectile.y <= (fish.y + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%12].y) / 2) + FISH_SIZE[fish.index%12].y))
 			)
 		);
 
@@ -120,11 +121,11 @@ function calcCollisions(state) {
 		state.projectiles.filter((projectile) =>
 			(
 				(fish.x >= projectile.x && fish.x <= (projectile.x + TORPEDO_SIZE)) ||
-				(projectile.x >= fish.x && projectile.x <= (fish.x + FISH_SIZE))
+				(projectile.x >= fish.x && projectile.x <= (fish.x + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%12].x) / 2) + FISH_SIZE[fish.index%12].x))
 			) &&
 			(
 				(fish.y >= projectile.y && fish.y <= (projectile.y + TORPEDO_SIZE)) ||
-				(projectile.y >= fish.y && projectile.y <= (fish.y + FISH_SIZE))
+				(projectile.y >= fish.y && projectile.y <= (fish.y + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%12].y) / 2) + FISH_SIZE[fish.index%12].y))
 			)
 		).length === 0
 	);
@@ -133,8 +134,8 @@ function calcCollisions(state) {
 	const newExplosions = [...state.explosions];
 	for(const position of positions) {
 		newExplosions.push({
-			x: position.x + FISH_SIZE / 2,
-			y: position.y + FISH_SIZE / 2,
+			x: position.x + FISH_MAX_SIZE / 2,
+			y: position.y + FISH_MAX_SIZE / 2,
 			radius: 5,
 			index: Math.round(Math.random() * 7),
 		})
