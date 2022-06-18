@@ -5,6 +5,7 @@ import { Canvas2D } from 'canvas2d-wrapper'
 import calcGameLoop from '../../business/calcGameLoop';
 import computeElementsList from '../../business/computeElementsList';
 
+import useGamepad from '../../hooks/useGamepad';
 import useKeyboard from '../../hooks/useKeyboard';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 
@@ -23,6 +24,7 @@ export default function Game({ quit }) {
 		submarineY: 0,
 	});
 	const keyboard = useKeyboard();
+	const gamepad= useGamepad();
 
 	const render = () => {
 		if((Date.now() - lastUpdate) < 15) {
@@ -31,9 +33,8 @@ export default function Game({ quit }) {
 
 		lastUpdate = Date.now();
 
-		setState(calcGameLoop(width, height, keyboard, state));
+		setState(calcGameLoop(width, height, keyboard, gamepad, state));
 	};
-
 	window.requestAnimationFrame(render);
 
 	if(state.lost) {

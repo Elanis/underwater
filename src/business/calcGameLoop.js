@@ -13,7 +13,7 @@ function recalcProjectiles(projectiles, width) {
 	}).filter((elt) => elt.x < width * 1.5);
 }
 
-function computeSubmarinePos(width, height, keyboard, submarineX, submarineY) {
+function computeSubmarinePos(width, height, keyboard, gamepad, submarineX, submarineY) {
 	let newX = 0 + submarineX;
 	let newY = 0 + submarineY;
 	if(keyboard['ArrowUp']) {
@@ -27,6 +27,28 @@ function computeSubmarinePos(width, height, keyboard, submarineX, submarineY) {
 	}
 	if(keyboard['ArrowRight']) {
 		newX += 10;
+	}
+
+	try {
+		if(gamepad) {
+			const upDownAxis = gamepad.axes[1];
+			const leftRightAxis = gamepad.axes[0];
+
+			if(upDownAxis < -0.5) {
+				newY -= 10;
+			}
+			if(upDownAxis > 0.5) {
+				newY += 10;
+			}
+			if(leftRightAxis < -0.5) {
+				newX -= 10;
+			}
+			if(leftRightAxis > 0.5) {
+				newX += 10;
+			}
+		}
+	} catch(e) {
+		console.error(e);
 	}
 
 	let maxDeltaYPos = 0.45 * height;
@@ -136,7 +158,7 @@ function recalcExplosive(explosions) {
 
 let lastTorp = Date.now();
 const TORP_INTERVAL = 500;
-export default function calcGameLoop(width, height, keyboard, state) {
+export default function calcGameLoop(width, height, keyboard, gamepad, state) {
 	if(state.lost) {
 		return state;
 	}
@@ -155,7 +177,7 @@ export default function calcGameLoop(width, height, keyboard, state) {
 	newState.fishes = recalcFishes(newState.score, state.fishes, width, height);
 
 	// Keyboard
-	[newState.submarineX, newState.submarineY] = computeSubmarinePos(width, height, keyboard, state.submarineX, state.submarineY);
+	[newState.submarineX, newState.submarineY] = computeSubmarinePos(width, height, keyboard, gamepad, state.submarineX, state.submarineY);
 
 	// Explosves
 	newState.explosions = recalcExplosive(state.explosions);
@@ -163,7 +185,9 @@ export default function calcGameLoop(width, height, keyboard, state) {
 	// Collisions
 	[ newState.projectiles, newState.fishes, newState.explosions, newState.lost, newState.score ] = calcCollisions(newState);
 
-	if(keyboard[' '] && (Date.now() - lastTorp) > TORP_INTERVAL) {
+	if(
+		(keyboard[' '] || (gamepad && gamepad.buttons[3].pressed) || (gamepad && gamepad.buttons[2].pressed))
+			&& (Date.now() - lastTorp) > TORP_INTERVAL) {
 		newState.projectiles.push({x: newState.submarineX + 80, y: newState.submarineY + 50 });
 		lastTorp = Date.now();
 	}
