@@ -91,11 +91,11 @@ function calcCollisions(state) {
 	let lost = state.fishes.filter((fish) =>
 		(
 			(fish.x >= state.submarineX && fish.x <= (state.submarineX + SUBMARINE_SIZE)) ||
-			(state.submarineX >= fish.x && state.submarineX <= (fish.x + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%12].x) / 2) +  FISH_SIZE[fish.index%12].x))
+			(state.submarineX >= fish.x && state.submarineX <= (fish.x + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%10].x) / 2) +  FISH_SIZE[fish.index%10].x))
 		) &&
 		(
 			(fish.y >= state.submarineY && fish.y <= (state.submarineY + SUBMARINE_SIZE)) ||
-			(state.submarineY >= fish.y && state.submarineY <= (fish.y + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%12].y) / 2) + FISH_SIZE[fish.index%12].y))
+			(state.submarineY >= fish.y && state.submarineY <= (fish.y + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%10].y) / 2) + FISH_SIZE[fish.index%10].y))
 		)
 	).length > 0
 
@@ -104,11 +104,11 @@ function calcCollisions(state) {
 		let collisionning = state.fishes.filter((fish) =>
 			(
 				(fish.x >= projectile.x && fish.x <= (projectile.x + TORPEDO_SIZE)) ||
-				(projectile.x >= fish.x && projectile.x <= (fish.x + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%12].x) / 2) + FISH_SIZE[fish.index%12].x))
+				(projectile.x >= fish.x && projectile.x <= (fish.x + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%10].x) / 2) + FISH_SIZE[fish.index%10].x))
 			) &&
 			(
 				(fish.y >= projectile.y && fish.y <= (projectile.y + TORPEDO_SIZE)) ||
-				(projectile.y >= fish.y && projectile.y <= (fish.y + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%12].y) / 2) + FISH_SIZE[fish.index%12].y))
+				(projectile.y >= fish.y && projectile.y <= (fish.y + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%10].y) / 2) + FISH_SIZE[fish.index%10].y))
 			)
 		);
 
@@ -121,11 +121,11 @@ function calcCollisions(state) {
 		state.projectiles.filter((projectile) =>
 			(
 				(fish.x >= projectile.x && fish.x <= (projectile.x + TORPEDO_SIZE)) ||
-				(projectile.x >= fish.x && projectile.x <= (fish.x + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%12].x) / 2) + FISH_SIZE[fish.index%12].x))
+				(projectile.x >= fish.x && projectile.x <= (fish.x + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%10].x) / 2) + FISH_SIZE[fish.index%10].x))
 			) &&
 			(
 				(fish.y >= projectile.y && fish.y <= (projectile.y + TORPEDO_SIZE)) ||
-				(projectile.y >= fish.y && projectile.y <= (fish.y + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%12].y) / 2) + FISH_SIZE[fish.index%12].y))
+				(projectile.y >= fish.y && projectile.y <= (fish.y + ((FISH_MAX_SIZE - FISH_SIZE[fish.index%10].y) / 2) + FISH_SIZE[fish.index%10].y))
 			)
 		).length === 0
 	);
@@ -134,7 +134,7 @@ function calcCollisions(state) {
 	for(const position of positions) {
 		const sound = new Audio();
 		sound.volume = 0.25;
-		sound.src = '/snd/268557__cydon__explosion-001.mp3';
+		sound.src = './snd/268557__cydon__explosion-001.mp3';
 		sound.play();
 
 		newExplosions.push({

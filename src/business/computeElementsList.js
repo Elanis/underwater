@@ -31,7 +31,7 @@ preloadImages([
 	...Array.from({ length: 10}, (_, i) => DIGIT_SRC(i)),
 	...Array.from({ length: 8}, (_, i) => EXPLOSIVE_SRC(i)),
 	FG_GROUND_SRC,
-	...Array.from({ length: 12}, (_, i) => FISH_SRC(i)),
+	...Array.from({ length: 10}, (_, i) => FISH_SRC(i)),
 	...Array.from({ length: 24}, (_, i) => PLANT_SRC(i + 1)),
 	SUBMARINE_SRC,
 	TORPEDO_SRC,
@@ -176,17 +176,17 @@ export default function computeElementsList(width, height, state) {
 				height: FISH_MAX_SIZE,
 				zIndex: 100,
 				draggable: false,
-				src: FISH_SRC(elt.index%12)
+				src: FISH_SRC(elt.index%10)
 			})
 		),
 		/*Collision Debug:*/
 		/*...state.fishes.map((elt, i) => 
 			new Rect({
 				id: `square-${elt.index}`,
-				x: (FISH_MAX_SIZE - FISH_SIZE[elt.index%12].x) / 2 + elt.x,
-				y: (FISH_MAX_SIZE - FISH_SIZE[elt.index%12].y) / 2 + elt.y,
-				width: FISH_SIZE[elt.index%12].x,
-				height: FISH_SIZE[elt.index%12].y,
+				x: (FISH_MAX_SIZE - FISH_SIZE[elt.index%10].x) / 2 + elt.x,
+				y: (FISH_MAX_SIZE - FISH_SIZE[elt.index%10].y) / 2 + elt.y,
+				width: FISH_SIZE[elt.index%10].x,
+				height: FISH_SIZE[elt.index%10].y,
 				zIndex: 100,
 				draggable: false,
 				stroke: '#FF0000'
