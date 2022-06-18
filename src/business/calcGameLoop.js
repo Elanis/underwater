@@ -130,9 +130,13 @@ function calcCollisions(state) {
 		).length === 0
 	);
 
-	// TODO: sound if explode
 	const newExplosions = [...state.explosions];
 	for(const position of positions) {
+		const sound = new Audio();
+		sound.volume = 0.25;
+		sound.src = '/snd/268557__cydon__explosion-001.mp3';
+		sound.play();
+
 		newExplosions.push({
 			x: position.x + FISH_MAX_SIZE / 2,
 			y: position.y + FISH_MAX_SIZE / 2,
