@@ -9,3 +9,4 @@ External assets:
 - Submarine: Ocean icons created by Freepik - https://www.flaticon.com/free-icons/ocean
 - Tiles: https://www.kenney.nl/assets/fish-pack
 - Torpedoe: Bomb icons created by Freepik - https://www.flaticon.com/free-icons/bomb
+- Explosion sound: Explosion_001.mp3 by cydon - https://freesound.org/s/268557/
