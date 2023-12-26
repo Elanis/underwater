@@ -1,13 +1,9 @@
 import { useState } from 'react';
 
-import { Canvas2D } from 'canvas2d-wrapper'
+import { Canvas2D, useGamepad, useKeyboard,  useWindowDimensions } from 'canvas2d-wrapper'
 
 import calcGameLoop from '../../business/calcGameLoop';
 import computeElementsList from '../../business/computeElementsList';
-
-import useGamepad from '../../hooks/useGamepad';
-import useKeyboard from '../../hooks/useKeyboard';
-import useWindowDimensions from '../../hooks/useWindowDimensions';
 
 import './index.css';
 
