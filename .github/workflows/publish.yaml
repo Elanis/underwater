@@ -64,7 +64,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: react
-          path: dist 
+          path: build 
 
   itch_publish_job:
     needs: build_job
@@ -81,7 +81,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: react
-          path: dist/
+          path: build/
 
       - name: Install butler
         run: |
@@ -94,4 +94,4 @@ jobs:
 
       - name: Upload build
         run: |
-          ./butler push dist/ elanis/underwater:web
+          ./butler push build/ elanis/underwater:web
