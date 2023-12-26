@@ -1,0 +1,110 @@
+name: Build/release
+
+on:
+    push:
+
+permissions:
+  packages: write
+  contents: write
+
+jobs:
+  tag_job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set Git Identity
+        run: |
+          git config --global user.email "112242530+DysnomiaBot@users.noreply.github.com"
+          git config --global user.name "DysnomiaBot"
+
+      - name: Tag (Main)
+        run: npm version patch
+
+      - name: Push
+        run: |
+          git push
+          git push --tags
+
+  sonar_job:
+    needs: tag_job
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - run: npm install
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+
+      - name: SonarQube Quality Gate check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        # Force to fail step after specific time
+        timeout-minutes: 5
+        env:
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  build_job:
+    needs: sonar_job
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - run: npm install
+
+      - name: React build
+        run: |
+          CI=false npm run build
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: react
+          path: dist 
+
+  itch_publish_job:
+    needs: build_job
+
+    env:
+      BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: react
+          path: dist/
+
+      - name: Install butler
+        run: |
+          curl -L -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip butler.zip
+
+          chmod +x butler
+
+          ./butler -V
+
+      - name: Upload build
+        run: |
+          ./butler push dist/ elanis/underwater:web
