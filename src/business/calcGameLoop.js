@@ -133,7 +133,7 @@ function calcCollisions(state) {
 	const newExplosions = [...state.explosions];
 	for(const position of positions) {
 		const sound = new Audio();
-		sound.volume = 0.25;
+		sound.volume = 0.1;
 		sound.src = './snd/268557__cydon__explosion-001.mp3';
 		sound.play();
 
