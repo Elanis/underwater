@@ -24,10 +24,10 @@ function computeSubmarinePos(width, height, keyboard, gamepad, submarineX, subma
 		newY += 10;
 	}
 	if(keyboard['ArrowLeft']) {
-		newX -= 10;
+		newX -= 5;
 	}
 	if(keyboard['ArrowRight']) {
-		newX += 10;
+		newX += 5;
 	}
 
 	try {
