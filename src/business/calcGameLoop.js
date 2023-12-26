@@ -81,7 +81,7 @@ function recalcFishes(score, fishes, width, height) {
 	}
 
 	return newFishes.map((elt) => {
-		elt.x -= (3 + elt.index % 3);
+		elt.x -= (elt.index % 3);
 
 		return elt;
 	});
@@ -161,8 +161,8 @@ function recalcExplosive(explosions) {
 	}).filter((elt) => elt.radius < 75);
 }
 
-let lastTorp = Date.now();
-const TORP_INTERVAL = 500;
+const TORP_INTERVAL = 250;
+let lastTorp = Date.now() - TORP_INTERVAL;
 export default function calcGameLoop(width, height, keyboard, gamepad, state) {
 	if(state.lost) {
 		return state;

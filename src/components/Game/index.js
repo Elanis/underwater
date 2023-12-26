@@ -11,7 +11,6 @@ import useWindowDimensions from '../../hooks/useWindowDimensions';
 
 import './index.css';
 
-let lastUpdate = Date.now();
 export default function Game({ quit }) {
 	const { width, height } = useWindowDimensions();
 	const [state, setState] = useState({
@@ -24,18 +23,9 @@ export default function Game({ quit }) {
 		submarineY: 0,
 	});
 	const keyboard = useKeyboard();
-	const gamepad= useGamepad();
+	const gamepad = useGamepad();
 
-	const render = () => {
-		if((Date.now() - lastUpdate) < 15) {
-			return;
-		}
-
-		lastUpdate = Date.now();
-
-		setState(calcGameLoop(width, height, keyboard, gamepad, state));
-	};
-	window.requestAnimationFrame(render);
+	const onFrame = () => setState((currState) => calcGameLoop(width, height, keyboard, gamepad, currState));
 
 	if(state.lost) {
 		return (
@@ -57,6 +47,7 @@ export default function Game({ quit }) {
 			tileSize={1}
 			lockXAxis={true}
 			lockYAxis={true}
+			onFrame={onFrame}
 		/>
 	);
 }
